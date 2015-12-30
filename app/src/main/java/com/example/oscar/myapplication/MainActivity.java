@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -23,7 +23,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
-import java.net.Socket;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        Intent socketServiceIntent = new Intent(this,SocketService.class);
+        bindService(socketServiceIntent,myConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void ConnectOnClick(View v) {
@@ -76,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
         EditText hostName = (EditText)findViewById(R.id.txfHostname);
         EditText portNumber = (EditText) findViewById(R.id.txfPortNumber);
 
-        Intent socketServiceIntent = new Intent(this,SocketService.class);
-        bindService(socketServiceIntent,myConnection, Context.BIND_AUTO_CREATE);
+
         try {
             socketService.createSocket(hostName.getText().toString(),Integer.valueOf(portNumber.getText().toString()));
             connectedToServer = true;
