@@ -19,20 +19,22 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:hint="Hostname - default localhost"
+        android:hint="IP"
         android:editable="true"
         android:enabled="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
         android:layout_below="@+id/txfHostname"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/txfPortNumber"
-        android:hint="Port Number - default 1337" />
+        android:hint="port"
+        android:autoText="false"
+        android:enabled="true"
+        android:inputType="number" />
 
     <Button
         android:layout_width="fill_parent"
@@ -40,9 +42,11 @@
         android:text="Connect"
         android:id="@+id/btnConnect"
         android:enabled="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:clickable="false"
-        android:onClick="ConnectOnClick" />
+        android:onClick="ConnectOnClick"
+        android:layout_below="@+id/txfPortNumber"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="112dp"
+        android:hapticFeedbackEnabled="true" />
 
 </RelativeLayout>

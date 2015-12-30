@@ -21,21 +21,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        hostname = getIntent().getStringExtra("hostname");
-        portNumber = getIntent().getIntExtra("port", 0);
-        //Log.v(TAG, "hostname=" + hostname);
-        //Log.v(TAG, "port=" + portNumber);
-        try {
-            socket = new Socket(hostname,portNumber);
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
     public void btnStartOnClick(){
 
-        out.println("startgame");
-        System.out.println("startbutton");
+        //out.println("startgame");
+        //System.out.println("startbutton");
     }
 }

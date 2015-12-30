@@ -1,8 +1,12 @@
 package com.example.oscar.myapplication;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -22,8 +27,6 @@ import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final static String EXTRA_SOCKET = "com.example.oscar.myapplication.SOCKET";
-    private Socket socket = null;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -31,6 +34,23 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    SocketService socketService;
+    boolean isBound = false;
+
+    private ServiceConnection myConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            SocketService.MyLocalBinder binder = (SocketService.MyLocalBinder) service;
+            socketService = binder.getService();
+            isBound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +72,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ConnectOnClick(View v) {
+        boolean connectedToServer;
         EditText hostName = (EditText)findViewById(R.id.txfHostname);
         EditText portNumber = (EditText) findViewById(R.id.txfPortNumber);
 
-        Intent intent = new Intent(this,GameActivity.class);
-        intent.putExtra("hostname",hostName.getText().toString());
-        intent.putExtra("port",Integer.parseInt(portNumber.getText().toString()));
-        startActivity(intent);
+        Intent socketServiceIntent = new Intent(this,SocketService.class);
+        bindService(socketServiceIntent,myConnection, Context.BIND_AUTO_CREATE);
+        try {
+            socketService.createSocket(hostName.getText().toString(),Integer.valueOf(portNumber.getText().toString()));
+            connectedToServer = true;
+        } catch (IOException e) {
+            connectedToServer = false;
+            Toast.makeText(MainActivity.this,"could not connect to server, check hostname and portnumber" , Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
+        if(connectedToServer) {
+            Intent gameActivityIntent = new Intent(this, GameActivity.class);
+            startActivity(gameActivityIntent);
+        }
     }
 
     @Override
