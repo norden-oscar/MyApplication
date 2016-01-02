@@ -70,11 +70,12 @@ public class MainActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         Intent socketServiceIntent = new Intent(this,SocketService.class);
+        startService(socketServiceIntent);
         bindService(socketServiceIntent,myConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void ConnectOnClick(View v) {
-        boolean connectedToServer;
+        boolean connectedToServer=false;
         EditText hostName = (EditText)findViewById(R.id.txfHostname);
         EditText portNumber = (EditText) findViewById(R.id.txfPortNumber);
         
