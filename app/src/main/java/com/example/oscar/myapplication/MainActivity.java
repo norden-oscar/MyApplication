@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         boolean connectedToServer;
         EditText hostName = (EditText)findViewById(R.id.txfHostname);
         EditText portNumber = (EditText) findViewById(R.id.txfPortNumber);
-
+        
 
         try {
             socketService.createSocket(hostName.getText().toString(),Integer.valueOf(portNumber.getText().toString()));
