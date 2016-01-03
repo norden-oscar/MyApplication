@@ -7,7 +7,10 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -16,6 +19,9 @@ import java.net.Socket;
 public class SocketService extends Service {
     private final IBinder myBinder = new MyLocalBinder();
     private Socket server;
+    private PrintWriter out;
+    private BufferedReader in;
+    private String answer;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -29,10 +35,34 @@ public class SocketService extends Service {
     public Socket getSocket(){
         return server;
     }
+    public String sendMessage(String message){
+
+        new SendMessageTask().execute(message);
+        return answer;
+    }
     public class MyLocalBinder extends Binder {
         SocketService getService() {
             return SocketService.this;
         }
+    }
+    private class SendMessageTask extends AsyncTask<String,Void,String>{
+
+        @Override
+        protected String doInBackground(String... message) {
+            String line = null;
+            String msg = message[0];
+            out.println(msg);
+            try {
+                line = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return line;
+        }
+        protected void onPostExecute(String line){
+            answer = line;
+        }
+
     }
     private class ConnectSocketTask extends AsyncTask<Object,Void,Socket>{
 
@@ -44,6 +74,8 @@ public class SocketService extends Service {
             Socket socket = null;
             try {
                 socket = new Socket(hostname, port);
+                out = new PrintWriter(socket.getOutputStream());
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
