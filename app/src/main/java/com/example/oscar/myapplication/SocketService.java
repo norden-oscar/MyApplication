@@ -48,8 +48,9 @@ public class SocketService extends Service {
     private class SendMessageTask extends AsyncTask<String,Void,String>{
 
         @Override
-        protected String doInBackground(String... msg) {
+        protected String doInBackground(String... message) {
             String line = null;
+            String msg = message[0];
             out.println(msg);
             try {
                 line = in.readLine();
