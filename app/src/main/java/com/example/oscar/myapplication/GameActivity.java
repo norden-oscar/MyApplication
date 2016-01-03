@@ -98,6 +98,7 @@ public class GameActivity extends AppCompatActivity {
             TextView guessField = (TextView) findViewById(R.id.showState);
             TextView life = (TextView) findViewById(R.id.textLife);
             TextView total = (TextView) findViewById(R.id.textTotalNumber);
+            EditText guessinput = (EditText) findViewById(R.id.inputGuess);
 
             if (results[2].equals("startgame")) {        // om det var ett start meddelande vi skickade, gÃ¶r start callback
 
@@ -111,7 +112,7 @@ public class GameActivity extends AppCompatActivity {
             } else if (results[0].contains("[")) {     // om det ska fortsÃ¤tta gissas
                 guessField.setText(results[0]);
                 life.setText(results[1]);
-                guessField.setText("");
+                guessinput.setText("");
 
 
             } else if (results[0].contains("Congratulations") || results[0].contains("Game over!")) {      // om spelet Ã¤r slut
