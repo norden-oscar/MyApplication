@@ -46,4 +46,42 @@
         android:id="@+id/btnGuess"
         android:layout_below="@+id/inputGuess"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Wrong guesses: "
+        android:id="@+id/textGuess"
+        android:layout_marginStart="28dp"
+        android:layout_alignTop="@+id/btnStart"
+        android:layout_toEndOf="@+id/btnStart" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="no"
+        android:id="@+id/textLife"
+        android:layout_alignBottom="@+id/textGuess"
+        android:layout_toEndOf="@+id/textGuess" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Total score: "
+        android:id="@+id/textView"
+        android:layout_below="@+id/textGuess"
+        android:layout_alignStart="@+id/textGuess" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="number"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_toEndOf="@+id/textView" />
+
 </RelativeLayout>
