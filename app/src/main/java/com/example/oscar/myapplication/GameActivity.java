@@ -24,6 +24,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         Button guessButton = (Button) findViewById(R.id.btnGuess);
+        Button startButton = (Button) findViewById(R.id.btnStart);
+        guessButton.setOnClickListener(buttonHandler);
+        startButton.setOnClickListener(buttonHandler);
         guessButton.setClickable(false);
         Intent socketServiceIntent = new Intent(this, SocketService.class);
         bindService(socketServiceIntent, myConnection, Context.BIND_AUTO_CREATE);
