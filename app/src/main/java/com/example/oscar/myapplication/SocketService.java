@@ -52,6 +52,7 @@ public class SocketService extends Service {
             String line = null;
             String msg = message[0];
             out.println(msg);
+            out.flush();
             try {
                 line = in.readLine();
             } catch (IOException e) {
