@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="number"
-        android:id="@+id/textView2"
+        android:id="@+id/textTotalNumber"
         android:layout_alignBottom="@+id/textView"
         android:layout_toEndOf="@+id/textView" />
 
