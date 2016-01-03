@@ -91,25 +91,32 @@ public class GameActivity extends AppCompatActivity {
             System.out.println(result);
             String[] results = result.split("\\|");
 
-            if (results[2].equals("startgame")) {        // om det var ett start meddelande vi skickade, gÃ¶r start callback
+            Button startButton = (Button) findViewById(R.id.btnStart);
+            Button guessButton = (Button) findViewById(R.id.btnGuess);
+            TextView guessField = (TextView) findViewById(R.id.showState);
+            TextView life = (TextView) findViewById(R.id.textLife);
+            TextView total = (TextView) findViewById(R.id.textTotalNumber);
 
-                Button startButton = (Button) findViewById(R.id.btnStart);
-                Button guessButton = (Button) findViewById(R.id.btnGuess);
-                TextView guessField = (TextView) findViewById(R.id.showState);
-                TextView life = (TextView) findViewById(R.id.textLife);
+            if (results[2].equals("startgame")) {        // om det var ett start meddelande vi skickade, gÃ¶r start callback
 
                 startButton.setClickable(false);
                 guessField.setText(results[0]);
                 life.setText(results[1]);
                 guessButton.setClickable(true);
 
-            }/* else if (line.contains("[")) {     // om det ska fortsÃ¤tta gissas
-                gui.sentGuess(result[0], result[1]);
+            } else if (results[0].contains("[")) {     // om det ska fortsÃ¤tta gissas
+                guessField.setText(results[0]);
+                life.setText(results[1]);
 
 
-            } else if (line.contains("Congratulations") || line.contains("Game over!")) {      // om spelet Ã¤r slut
-                gui.gameDone(result[0], result[1]);
-            }*/
+
+            } else if (results[0].contains("Congratulations") || results[0].contains("Game over!")) {      // om spelet Ã¤r slut
+                guessField.setText(results[0]);
+                life.setText("0");
+                startButton.setClickable(true);
+                guessButton.setClickable(false);
+                total.setText(results[1]);
+            }
         }
     }
 }
