@@ -71,9 +71,10 @@ public class GameActivity extends AppCompatActivity {
 
     protected class SendToServer extends AsyncTask<String, Void, String> {
 
-        protected String doInBackground(String... msg) {
+        protected String doInBackground(String... message) {
+            String msg = message[0];
 
-            return SocketService.sendMessage(msg) + "|" + msg;
+            return socketService.sendMessage(msg) + "|" + msg;
         }
 
         protected void onPostExecute(String result){
