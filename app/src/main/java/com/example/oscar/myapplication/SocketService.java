@@ -29,7 +29,7 @@ public class SocketService extends Service {
         return myBinder;
     }
     public void createSocket(String hostname,int port) throws IOException {
-       // server = new Socket(hostname,port);
+
         new ConnectSocketTask().execute(hostname,port);
     }
     public Socket getSocket(){
@@ -37,34 +37,25 @@ public class SocketService extends Service {
     }
     public String sendMessage(String message){
 
-        new SendMessageTask().execute(message);
-        return answer;
+
+        out.println(message);
+        out.flush();
+        String line = null;
+        while (line == null) {
+            try {
+                line = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return line;
     }
     public class MyLocalBinder extends Binder {
         SocketService getService() {
             return SocketService.this;
         }
     }
-    private class SendMessageTask extends AsyncTask<String,Void,String>{
 
-        @Override
-        protected String doInBackground(String... message) {
-            String line = null;
-            String msg = message[0];
-            out.println(msg);
-            out.flush();
-            try {
-                line = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return line;
-        }
-        protected void onPostExecute(String line){
-            answer = line;
-        }
-
-    }
     private class ConnectSocketTask extends AsyncTask<Object,Void,Socket>{
 
 
