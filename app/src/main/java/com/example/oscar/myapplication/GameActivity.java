@@ -1,9 +1,13 @@
 package com.example.oscar.myapplication;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +26,8 @@ public class GameActivity extends AppCompatActivity {
     Socket socket = null;
     PrintWriter out = null;
     BufferedReader in = null;
+    SocketService socketService;
+    boolean isBound = false;
 
     private static class Params {
         PrintWriter pw;
@@ -45,16 +51,34 @@ public class GameActivity extends AppCompatActivity {
         portNumber = getIntent().getIntExtra("port", 0);
         Button guessButton = (Button) findViewById(R.id.btnGuess);
         guessButton.setClickable(false);
-        //Log.v(TAG, "hostname=" + hostname);
-        //Log.v(TAG, "port=" + portNumber);
+
+        Intent socketServiceIntent = new Intent(this, SocketService.class);
+        bindService(socketServiceIntent, myConnection, Context.BIND_AUTO_CREATE);
+
         try {
-            socket = new Socket(hostname, portNumber);
+            socket = socketService.getSocket();
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
+        }
+
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private ServiceConnection myConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            SocketService.MyLocalBinder binder = (SocketService.MyLocalBinder) service;
+            socketService = binder.getService();
+            isBound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
 
     View.OnClickListener buttonHandler = new View.OnClickListener() {
         public void onClick(View v) {
@@ -132,15 +156,13 @@ public class GameActivity extends AppCompatActivity {
                 startButton.setClickable(false);
                 guessField.setText(result[0]);
                 life.setText(result[1]);
-
-
                 guessButton.setClickable(true);
 
-            } else if (line.contains("[")) {     // om det ska fortsÃ¤tta gissas
+            }/* else if (line.contains("[")) {     // om det ska fortsÃ¤tta gissas
                 gui.sentGuess(result[0], result[1]);
             } else if (line.contains("Congratulations") || line.contains("Game over!")) {      // om spelet Ã¤r slut
                 gui.gameDone(result[0], result[1]);
-            }
+            }*/
         }
     }
 
